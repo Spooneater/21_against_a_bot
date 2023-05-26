@@ -57,7 +57,7 @@ while [ $over -ne 2 ] #Продолжаем пока хотя бы один уч
 do
     if [ $enend -ne 1 ] #Бот получает карту и выбирает продолжать брать или нет
 	then 
-	roll 11
+	roll 11 #Получение карты с номиналом от 1 до 11
 	enscore=$(( $? + $enscore ))
 	encards=$(( 1 + $encards ))
 	stoproll $enscore
@@ -79,7 +79,7 @@ do
         myend=$?
     	if [ $myend -ne 1 ];
     	then
-    	    roll 11
+    	    roll 11 #Получение карты с номиналом от 1 до 11
     	    myscore=$(( $? + $myscore ))
     	    mycards=$(( 1 + $mycards ))
 	fi
