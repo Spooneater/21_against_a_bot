@@ -1,8 +1,8 @@
 #!/bin/bash
-function roll {
+function roll { #Получение случайного значения от 1 до переданного
 return $(( $RANDOM % $1 + 1 ))
-}
-function stoproll() {
+} 
+function stoproll() { #Функция для определения ботом, продолжать брать карты или нет. С увеличением счета, бот с большей вероятностью перестанет брать карты
 local temp=0
 if [ ${1} -ge 21 ]
     then
@@ -45,16 +45,16 @@ return $temp
 
 }
 over=0
-enend=0
-myend=0 #podtverjdenie okonchaniya matcha
+enend=0 # Флаг завершения добора карт для бота
+myend=0 # Флаг завершения добора карт для вас
 enscore=0
-myscore=0 #points
+myscore=0 #Количество очков
 encards=0
-mycards=0 #Cards amount
+mycards=0 #Количество карт
 text=''
-while [ $over -ne 2 ]
+while [ $over -ne 2 ] #Продолжаем пока хотя бы один участник берет карты
 do
-    if [ $enend -ne 1 ]
+    if [ $enend -ne 1 ] #Бот получает карту и выбирает продолжать брать или нет
 	then 
 	roll 11
 	enscore=$(( $? + $enscore ))
@@ -64,7 +64,7 @@ do
 
     fi
 
-    if [ $enend -ne 1 ]
+    if [ $enend -ne 1 ] #Сообщение в зависимости от выбора бота
     	then 
     	text="Enemy continues rolling with $encards cards\n"
     	else 
@@ -72,7 +72,7 @@ do
     fi
     text="${text}You have $myscore points and $mycards cards"	
 
-    if [ $myend -ne 1 ]
+    if [ $myend -ne 1 ] #Выбираем продолжать брать карты или нет, после чего берём, в случае положительного ответа
     	then
         dialog --title "Continue picking up cards?" --yesno "$text" 10 40
         myend=$?
@@ -82,13 +82,11 @@ do
     	    myscore=$(( $? + $myscore ))
     	    mycards=$(( 1 + $mycards ))
 	fi
-        else	
-    	dialog --title "Wait"  20 50
     fi
     over=$(( $myend + $enend ))
     
-done
-if [ $enscore -gt 21 ]
+done 
+if [ $enscore -gt 21 ] #Выбор победителя
     then
     if [ $myscore -gt 21 ]
     	then
@@ -120,6 +118,6 @@ else
     	text="Draw"
     	fi	
     fi
-fi
-dialog --title "$text" --msgbox "Enemy score = ${enscore}\nYour score = ${myscore}" 10 40
+fi 
+dialog --title "$text" --msgbox "Enemy score = ${enscore}\nYour score = ${myscore}" 10 40 #Вывод результата игры
 
